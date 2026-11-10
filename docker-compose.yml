@@ -1,0 +1,17 @@
+services:
+  postgres:
+    container_name: library_postgres
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: library
+      POSTGRES_USER: library
+      POSTGRES_PASSWORD: library
+    ports:
+      # 5433 on the host so it doesn't clash with the reference project's sin_postgres on 5432
+      - '5433:5432'
+    volumes:
+      - library-postgres:/var/lib/postgresql/data
+
+volumes:
+  library-postgres:

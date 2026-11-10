@@ -1,0 +1,5 @@
+# Liquibase entry point. Never edit or delete an applied changeset: add a new file instead.
+databaseChangeLog:
+  - include:
+      file: changes/001-create-schema.sql
+      relativeToChangelogFile: true

@@ -1,0 +1,90 @@
+@startuml
+title Library information system - domain model
+
+hide circle
+skinparam classAttributeIconSize 0
+
+enum Genre <<enumeration>> {
+  FICTION
+  FANTASY
+  SCIENCE_FICTION
+  CRIME
+  ROMANCE
+  HORROR
+  BIOGRAPHY
+  SCIENCE
+  HISTORY
+  CHILDREN
+}
+
+class Author {
+  id: Long
+  firstName: String
+  lastName: String
+  email: String {unique}
+}
+
+class Publisher {
+  id: Long
+  name: String
+  address: String
+}
+
+class Contract {
+  id: Long
+  signedAt: LocalDate
+}
+
+class Book {
+  id: Long
+  isbn: String {unique}
+  title: String
+  publicationDate: LocalDate
+  genre: Genre
+}
+
+class BookCopy {
+  id: Long
+  inventoryNumber: String {unique}
+}
+
+class Library {
+  id: Long
+  name: String
+  address: String
+}
+
+' Author <-> Publisher : M:N through Contract (the link carries signedAt)
+Author "1" -- "0..*" Contract
+Publisher "1" -- "0..*" Contract
+
+' Book <-> Author : plain M:N (join table "authorship", no extra data)
+Book "0..*" -- "1..*" Author : written by >
+
+' Book -> Publisher : N:1
+Book "0..*" -- "1" Publisher : published by >
+
+' Library <-> Book : through physical copies
+Library "1" -- "0..*" BookCopy : owns >
+Book "1" -- "0..*" BookCopy : copy of <
+
+Book ..> Genre
+
+note right of Contract
+  At most one contract per
+  (author, publisher) pair.
+end note
+
+note bottom of Book
+  Rules when publishing a new book:
+  - isbn must not exist yet
+  - every author must have a
+    Contract with the book's publisher
+end note
+
+note bottom of BookCopy
+  Rule: at most 5 copies
+  per (library, book)
+end note
+
+@enduml

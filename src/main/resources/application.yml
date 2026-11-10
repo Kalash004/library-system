@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: library-system
+  profiles:
+    active: dev
+  jpa:
+    hibernate:
+      # Liquibase owns the schema; Hibernate only checks that the entities match it
+      ddl-auto: validate
+    # No lazy loading in the web layer: services must load what the response needs
+    open-in-view: false
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml

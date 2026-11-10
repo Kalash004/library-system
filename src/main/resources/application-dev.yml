@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    # PostgreSQL from docker-compose.yml (docker compose up -d)
+    url: jdbc:postgresql://localhost:5433/library
+    username: library
+    password: library
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
